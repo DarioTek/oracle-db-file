@@ -16,7 +16,6 @@ create user fred identified by flintstone;
 grant dba to fred;
 connect fred/flintstone
 
-
 GRANT create session TO smithj;
 GRANT create table TO smithj;
 GRANT create view TO smithj;

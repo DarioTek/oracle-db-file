@@ -13,6 +13,10 @@ GRANT create any procedure TO trading_investing;
 GRANT create sequence TO trading_investing;
 GRANT create synonym TO trading_investing;
 
+/* 
+DROP USER trading_investing
+*/
+
 
 /************************************************************/
 DROP SCHEMA IF EXISTS trading_investing;
