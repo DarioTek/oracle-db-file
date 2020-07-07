@@ -1,3 +1,11 @@
+/*************************/
+/* CREATE NEW POWER USER */
+/*************************/
+CREATE USER trading_admin IDENTIFIED BY oracle;
+GRANT CONNECT, RESOURCE, DBA TO books_admin;
+
+
+/************************************************************/
 DROP SCHEMA IF EXISTS `trading_investing`;
 
 CREATE SCHEMA `trading_investing`;
