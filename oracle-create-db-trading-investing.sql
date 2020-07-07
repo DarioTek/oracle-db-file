@@ -2,7 +2,7 @@
 /* CREATE NEW POWER USER */
 /*************************/
 alter session set "_ORACLE_SCRIPT"=true;
-CREATE USER trading_investing IDENTIFIED BY oracle;
+
 GRANT CONNECT, RESOURCE, DBA TO trading_investing;
 
 GRANT create session TO trading_investing;
@@ -23,7 +23,7 @@ DROP SCHEMA IF EXISTS trading_investing;
 
 CREATE SCHEMA trading_investing;
 
-use `trading_investing`;
+use trading_investing
 /************************************************************/
 
 DROP TABLE IF EXISTS `watch_list`;
