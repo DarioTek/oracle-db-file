@@ -1,14 +1,23 @@
 /*************************/
 /* CREATE NEW POWER USER */
 /*************************/
-CREATE USER trading_admin IDENTIFIED BY oracle;
-GRANT CONNECT, RESOURCE, DBA TO books_admin;
+alter session set "_ORACLE_SCRIPT"=true;
+CREATE USER trading_investing IDENTIFIED BY oracle;
+GRANT CONNECT, RESOURCE, DBA TO trading_investing;
+
+GRANT create session TO trading_investing;
+GRANT create table TO trading_investing;
+GRANT create view TO trading_investing;
+GRANT create any trigger TO trading_investing;
+GRANT create any procedure TO trading_investing;
+GRANT create sequence TO trading_investing;
+GRANT create synonym TO trading_investing;
 
 
 /************************************************************/
-DROP SCHEMA IF EXISTS `trading_investing`;
+DROP SCHEMA IF EXISTS trading_investing;
 
-CREATE SCHEMA `trading_investing`;
+CREATE SCHEMA trading_investing;
 
 use `trading_investing`;
 /************************************************************/
