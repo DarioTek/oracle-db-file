@@ -13,6 +13,9 @@ GRANT create any procedure TO trading_investing;
 GRANT create sequence TO trading_investing;
 GRANT create synonym TO trading_investing;
 
+-- To prevent ORA-01950: no privileges on tablespace error
+GRANT UNLIMITED TABLESPACE TO trading_investing
+
 -- Dropping User with admin privilege
 alter session set "_ORACLE_SCRIPT"=true;
 DROP USER trading_investing cascade;
@@ -55,7 +58,7 @@ CREATE TABLE trading_investing.LOAD_HISTORICAL_PRICES (
     high_price             NUMBER(21, 6),
     low_price              NUMBER(21, 6),
     adjusted_close_price   NUMBER(21, 6),
-    volume                 NUMBER
+    volume                 NUMBER(21)
 );
 
 /****************************************************/
@@ -73,65 +76,24 @@ CREATE TABLE trading_investing.HISTORICAL_PRICES (
     high_price             NUMBER(21, 6),
     low_price              NUMBER(21, 6),
     adjusted_close_price   NUMBER(21, 6),
-    volume                 NUMBER
+    volume                 NUMBER(21)
 );
 
 
-ALTER TABLE trading_investing.HISTORICAL_PRICES ADD CONSTRAINT HISTORICAL_PRICES_PK PRIMARY KEY ( symbol,
-                                                                                                                        record_date
-                                                                                                                        );                
+ALTER TABLE trading_investing.HISTORICAL_PRICES ADD CONSTRAINT HISTORICAL_PRICES_PK PRIMARY KEY (symbol, record_date);                
 
-/************************************************************/
+/***********************************************************************/
+/* Insert data from LOAD_HISTORICAL_PRICESS to HISTORICAL_PRICES table */
+/***********************************************************************/
+truncate table trading_investing.LOAD_HISTORICAL_PRICES;
+commit;
 
+INSERT INTO trading_investing.HISTORICAL_PRICES (SYMBOL, RECORD_DATE, OPEN_PRICE, CLOSE_PRICE, HIGH_PRICE, LOW_PRICE, ADJUSTED_CLOSE_PRICE, VOLUME)
+SELECT 'JPM',
+       RECORD_DATE, OPEN_PRICE, CLOSE_PRICE, HIGH_PRICE, LOW_PRICE, ADJUSTED_CLOSE_PRICE, VOLUME       
+FROM trading_investing.LOAD_HISTORICAL_PRICES
+--WHERE condition;
 
-CREATE TABLE `ameritrade_transactions` (
-  `date` date not null,
-  `transaction_id` varchar(15) NOT NULL,
-  `description` varchar(150) NOT NULL,
-  `quantity` numeric NOT NULL,
-  `symbol` varchar(30) NOT NULL,
-  `price` decimal(16, 6) NOT NULL,
-  `commission` decimal(16, 6) NOT NULL,
-  `amount` decimal(16, 6) NOT NULL,
-  `net_cash_balance` decimal(16, 6) NOT NULL,
-  `reg_fee` decimal(16, 6),
-  `short_term_rdm_fee` decimal(16, 6),
-  `fund_redemption_fee` decimal(16, 6),
-  `deferred_sales_charge` decimal(16, 6),
-  PRIMARY KEY (`transaction_id`)
-);
+commit;
 
-/************************************************************/
-
-CREATE TABLE `stock_quote_summary` (
-  `symbol` varchar(30) NOT NULL,
-  `scrape_date` date not null,
-  `live_price` decimal(26, 6),
-  `live_price_change` decimal(26, 6),
-  `live_price_change_percentage` decimal(26, 6),
-  `previous_closing_price` decimal(26, 6) NOT NULL,
-  `opening_price` decimal(26, 6) NOT NULL,
-  `bid_offer` decimal(26, 6) NOT NULL,
-  `bid_quantity` int,
-  `asking_price` decimal(26, 6) NOT NULL,
-  `asking_quantity` int,
-  `days_range_start` decimal(26, 6) NOT NULL,
-  `days_range_end` decimal(26, 6) NOT NULL,
-  `fiftytwo_range_start` decimal(26, 6) NOT NULL,
-  `fiftytwo_range_end` decimal(26, 6) NOT NULL,
-  `volume` int,
-  `average_volume` int,
-  `market_cap` decimal(26, 6),
-  `beta` decimal(26, 6),
-  `pe_ratio_ttm` decimal(26, 6),
-  `eps_ttm` decimal(26, 6),  
-  `earnings_date_start` date,
-  `earnings_date_end` date,
-  `dividend` decimal(26, 6),
-  `yield` decimal(26, 6),
-  `ex_dividend_date` date,
-  `one_year_targe_estimate` decimal(26, 6), 
-  `potential_earning` decimal(26, 6), 
-  `potential_earning_percent` decimal(26, 6), 
-  PRIMARY KEY (`symbol`, `scrape_date`)
-); 
+select * from trading_investing.LOAD_HISTORICAL_PRICES order by record_date asc

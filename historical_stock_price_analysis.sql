@@ -1,6 +1,6 @@
-SELECT * FROM trading_investing.historical_stock_prices;
+SELECT * FROM trading_investing.HISTORICAL_PRICES
 
-SELECT symbol, count(symbol) FROM trading_investing.historical_stock_prices group by symbol;
+SELECT symbol, count(symbol) FROM trading_investing.HISTORICAL_PRICES group by symbol;
 
 /* sample query with date comparison - disregard error*/
 SELECT * FROM trading_investing.historical_stock_prices where txn_date > date '2018-05-29';
