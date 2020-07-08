@@ -1,9 +1,10 @@
 /*************************/
 /* CREATE NEW POWER USER */
 /*************************/
+DROP USER trading_investing
 alter session set "_ORACLE_SCRIPT"=true;
 
-GRANT CONNECT, RESOURCE, DBA TO trading_investing;
+GRANT CONNECT, RESOURCE TO trading_investing;
 
 GRANT create session TO trading_investing;
 GRANT create table TO trading_investing;
@@ -26,14 +27,14 @@ CREATE SCHEMA trading_investing;
 use trading_investing
 /************************************************************/
 
-DROP TABLE IF EXISTS `watch_list`;
+DROP TABLE IF EXISTS watch_list;
 
-CREATE TABLE `watch_list` (
-  `watch_list_name` varchar(50) NOT NULL,
-  `symbol` varchar(30) NOT NULL,
-  `sector` varchar(30),
-  PRIMARY KEY (`watch_list_name`,`symbol`)
-);
+CREATE TABLE trading_investing.watch_list (
+  watch_list_name varchar(50) NOT NULL,
+  symbol varchar(30) NOT NULL,
+  sector varchar(30),
+  PRIMARY KEY (watch_list_name,symbol)
+)
 
 
 
