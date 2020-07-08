@@ -3,7 +3,8 @@
 /*************************/
 alter session set "_ORACLE_SCRIPT"=true;
 
-GRANT CONNECT, RESOURCE, DBA TO trading_investing;
+--GRANT CONNECT, RESOURCE, DBA TO trading_investing;
+GRANT CONNECT, RESOURCE TO trading_investing;
 
 GRANT create session TO trading_investing;
 GRANT create table TO trading_investing;
