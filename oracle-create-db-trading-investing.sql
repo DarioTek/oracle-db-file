@@ -2,10 +2,9 @@
 /* CREATE NEW POWER USER */
 /*************************/
 alter session set "_ORACLE_SCRIPT"=true;
-
+create user TRADING_INVESTING identified by oracle;
 --GRANT CONNECT, RESOURCE, DBA TO trading_investing;
 GRANT CONNECT, RESOURCE TO trading_investing;
-
 GRANT create session TO trading_investing;
 GRANT create table TO trading_investing;
 GRANT create view TO trading_investing;
@@ -14,33 +13,76 @@ GRANT create any procedure TO trading_investing;
 GRANT create sequence TO trading_investing;
 GRANT create synonym TO trading_investing;
 
-/* 
-DROP USER trading_investing
-*/
+-- Dropping User with admin privilege
+alter session set "_ORACLE_SCRIPT"=true;
+DROP USER trading_investing cascade;
 
+-- Test connecting with the user credentials
+connect trading_investing/oracle
 
-/************************************************************/
-DROP SCHEMA IF EXISTS trading_investing;
+-- Alter and unlock account
+alter user fred identified by flintstone account unlock;
 
-CREATE SCHEMA trading_investing;
+/*********************************************/
+/* Create trading_investing.watch_list table */
+/*********************************************/
+--drop table trading_investing.watch_list
 
-use trading_investing
-/************************************************************/
+CREATE TABLE trading_investing.watch_list (
+    watch_list_name   VARCHAR2(50 CHAR) NOT NULL,
+    ticker_symbol     VARCHAR2(30 CHAR) NOT NULL
+);
 
-DROP TABLE IF EXISTS `watch_list`;
+ALTER TABLE trading_investing.watch_list ADD CONSTRAINT watch_list_pk PRIMARY KEY ( watch_list_name,
+                                                                                    ticker_symbol );
 
-CREATE TABLE `watch_list` (
-  `watch_list_name` varchar(50) NOT NULL,
-  `symbol` varchar(30) NOT NULL,
-  `sector` varchar(30),
-  PRIMARY KEY (`watch_list_name`,`symbol`)
+/*********************************************************/
+/* Create trading_investing.load_historical_prices table */
+/*********************************************************/
+
+--drop table "TRADING_INVESTING.LOAD_HISTORICAL_PRICES"
+--drop table "trading_investing.LOAD_HISTORICAL_PRICES"
+/*
+ * Not the drop statements above have quotes and is totally different without quotes.
+ */ 
+
+drop table trading_investing.LOAD_HISTORICAL_PRICES
+
+CREATE TABLE trading_investing.LOAD_HISTORICAL_PRICES (
+    record_date            DATE NOT NULL,
+    open_price             NUMBER(21, 6),
+    close_price            NUMBER(21, 6),
+    high_price             NUMBER(21, 6),
+    low_price              NUMBER(21, 6),
+    adjusted_close_price   NUMBER(21, 6),
+    volume                 NUMBER
+);
+
+/****************************************************/
+/* Create TRADING_INVESTING.HISTORICAL_PRICES table */
+/****************************************************/
+--drop table "TRADING_INVESTING.HISTORICAL_PRICES"
+--drop table TRADING_INVESTING.HISTORICAL_PRICES
+drop table trading_investing.HISTORICAL_PRICES
+
+CREATE TABLE trading_investing.HISTORICAL_PRICES (
+    symbol                 VARCHAR2(30 CHAR) NOT NULL,
+    record_date            DATE NOT NULL,
+    open_price             NUMBER(21, 6),
+    close_price            NUMBER(21, 6),
+    high_price             NUMBER(21, 6),
+    low_price              NUMBER(21, 6),
+    adjusted_close_price   NUMBER(21, 6),
+    volume                 NUMBER
 );
 
 
+ALTER TABLE trading_investing.HISTORICAL_PRICES ADD CONSTRAINT HISTORICAL_PRICES_PK PRIMARY KEY ( symbol,
+                                                                                                                        record_date
+                                                                                                                        );                
 
 /************************************************************/
 
-DROP TABLE IF EXISTS `ameritrade_transactions`;
 
 CREATE TABLE `ameritrade_transactions` (
   `date` date not null,
@@ -60,28 +102,6 @@ CREATE TABLE `ameritrade_transactions` (
 );
 
 /************************************************************/
-DROP TABLE IF EXISTS `historical_stock_prices`;
-
-CREATE TABLE `historical_stock_prices` (
-  `symbol` varchar(30) NOT NULL,
-  `txn_date` date not null,
-  `open` decimal(16, 6) NOT NULL,
-  `close` decimal(16, 6) NOT NULL,
-  `high` decimal(16, 6) NOT NULL,
-  `low` decimal(16, 6) NOT NULL,
-  `adj_close` decimal(16, 6) NOT NULL,
-  `volume` numeric NOT NULL,
-  `day_of_week` int,
-  `day_of_month` int,
-  `month` int,
-  `year` int,
-  `up_down` decimal(16, 6),
-  `up_down_direction` int,
-  PRIMARY KEY (`symbol`, `txn_date`)
-); 
-
-/************************************************************/
-DROP TABLE IF EXISTS `stock_quote_summary`;
 
 CREATE TABLE `stock_quote_summary` (
   `symbol` varchar(30) NOT NULL,
