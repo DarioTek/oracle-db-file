@@ -97,3 +97,48 @@ FROM trading_investing.LOAD_HISTORICAL_PRICES
 commit;
 
 select * from trading_investing.LOAD_HISTORICAL_PRICES order by record_date asc
+
+
+/****************************************************/
+/* Create TRADING_INVESTING.HISTORICAL_PRICES table */
+/****************************************************/
+CREATE TABLE trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY (
+    record_datetime                   DATE NOT NULL,
+    symbol                            VARCHAR2(30 CHAR) NOT NULL,
+    live_price                        NUMBER(21, 6),
+    previous_closing_price            NUMBER(21, 6),
+    opening_price                     NUMBER(21, 6),
+    bid_offer_price                   NUMBER(21, 6),
+    bid_offer_quantity                NUMBER(21),
+    asking_price                      NUMBER(21, 6),
+    asking_quantity                   NUMBER(21),
+    days_range_low_price              NUMBER(21, 6),
+    days_range_high_price             NUMBER(21, 6),
+    fifty_two_week_range_low_price    NUMBER(21, 6),
+    fifty_two_week_range_high_price   NUMBER(21, 6),
+    volume                            NUMBER(21),
+    average_volume                    NUMBER(21),
+    market_capitalization             NUMBER(31, 6),
+    beta                              NUMBER(21, 6),
+    pe_ratio_ttm                      NUMBER(21, 6),
+    eps_ttm                           NUMBER(21, 6),
+    earnings_date                     DATE,
+    earnings_date_end                 DATE,
+    dividend                          NUMBER(21, 6),
+    dividend_yield                    NUMBER(21, 6),
+    ex_dividend_date                  DATE,
+    one_year_target_price             NUMBER(21, 6)
+);
+
+ALTER TABLE trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY ADD CONSTRAINT YAHOO_FINANCE_QUOTE_SUMMARY_PK PRIMARY KEY (record_datetime, symbol);
+
+
+CREATE TABLE trading_investing.STOCK_MASTER_LIST (
+    symbol          VARCHAR2(30 CHAR) NOT NULL,
+    security_name   VARCHAR2(100 CHAR),
+    sector          VARCHAR2(100 CHAR),
+    industry        VARCHAR2(100 CHAR)
+)
+LOGGING;
+
+ALTER TABLE trading_investing.STOCK_MASTER_LIST ADD CONSTRAINT STOCK_MASTER_LIST_PK PRIMARY KEY ( symbol );

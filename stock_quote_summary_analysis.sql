@@ -1,16 +1,15 @@
-delete FROM trading_investing.stock_quote_summary;
-commit;
-
 /*
  * Which stock has the most earning potential for the year?
  */ 
-SELECT * FROM trading_investing.stock_quote_summary 
-where scrape_date = (select max(scrape_date) from trading_investing.stock_quote_summary)
-order by potential_earning_percent desc;
+SELECT *
+FROM nls_session_parameters
+WHERE parameter = 'NLS_DATE_FORMAT';
 
+ALTER SESSION SET nls_date_format = 'DD/MON/YYYY hh24:mi:ss';
+
+SELECT * FROM trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY
+
+SELECT * FROM trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY where SYMBOL = 'GS'
 /*
  * Which stock has the most dividend yield
  */ 
-SELECT * FROM trading_investing.stock_quote_summary 
-where scrape_date = (select max(scrape_date) from trading_investing.stock_quote_summary)
-order by yield desc;
