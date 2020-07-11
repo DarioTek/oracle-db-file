@@ -138,7 +138,52 @@ CREATE TABLE trading_investing.STOCK_MASTER_LIST (
     security_name   VARCHAR2(100 CHAR),
     sector          VARCHAR2(100 CHAR),
     industry        VARCHAR2(100 CHAR)
-)
-LOGGING;
+);
+
 
 ALTER TABLE trading_investing.STOCK_MASTER_LIST ADD CONSTRAINT STOCK_MASTER_LIST_PK PRIMARY KEY ( symbol );
+
+
+
+INSERT INTO trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY VALUES (TO_DATE('07/10/2020 08:34:23','MM/DD/YYYY HH:MI:SS'), 'MMM', 151.45, 154.58, 154.58, 150.5, 800, 151.43, 1200, 151.04, 154.72, 114.04, 187.72, 2114745, 3491922, 87113000000.000, 0.99, 17.77, 8.52, TO_DATE('07/28/2020','MM/DD/YYYY'), null, 5.88, 3.88, TO_DATE('00/21/2020','MM/DD/YYYY'), 157.47)
+
+INSERT INTO trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY VALUES (TO_DATE('07/10/2020 08:38:18','MM/DD/YYYY HH:MI:SS'), 'MMM', 151.45, 154.58, 154.58, 150.5, 800, 151.43, 1200, 151.04, 154.72, 114.04, 187.72, 2114745, 3491922, 87113000000.000, 0.99, 17.77, 8.52, TO_DATE('07/28/2020','MM/DD/YYYY'), null, 5.88, 3.88, TO_DATE('05/21/2020','MM/DD/YYYY'), 157.47)
+commit;
+
+truncate table trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY
+
+
+/*
+ *
+ */
+ CREATE OR REPLACE VIEW trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW AS
+    SELECT
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.record_datetime,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.symbol,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.live_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.previous_closing_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.opening_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.bid_offer_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.bid_offer_quantity,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.asking_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.asking_quantity,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.days_range_low_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.days_range_high_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.fifty_two_week_range_low_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.fifty_two_week_range_high_price,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.volume,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.average_volume,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.market_capitalization,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.beta,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.pe_ratio_ttm,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.eps_ttm,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.earnings_date,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.earnings_date_end,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.dividend,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.dividend_yield,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.ex_dividend_date,
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.one_year_target_price
+    FROM
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY 
+    WHERE
+        trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.record_datetime in (SELECT max(record_datetime) FROM trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY);
