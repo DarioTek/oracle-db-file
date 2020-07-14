@@ -1,6 +1,9 @@
 /*
  * Validation queries
  */
+select RECORD_DATETIME, count(*) from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY group by RECORD_DATETIME
+-- Why are the scrapped records different every run? Put a retry logic? and track which ticker symbol error out?
+ 
 -- Live price is null
 select * from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW where live_price is null
 
@@ -25,7 +28,6 @@ SELECT * FROM trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY where SYMBOL = 'GS'
 
 SELECT * FROM trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY where SYMBOL = 'SIVB'
 
-select RECORD_DATETIME, count(*) from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY group by RECORD_DATETIME
 
 /*
  * Which stock has the most dividend yield
