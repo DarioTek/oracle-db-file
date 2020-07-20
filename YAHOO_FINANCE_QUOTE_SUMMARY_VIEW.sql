@@ -29,7 +29,7 @@
         trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.ex_dividend_date,
         trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.one_year_target_price,
         (trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.one_year_target_price - trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.live_price)as one_year_potential_gain,
-        ((trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.one_year_target_price - trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.live_price)/trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.one_year_target_price)*100 as one_year_potential_gain_percentage
+        ((trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.one_year_target_price - trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.live_price)/trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY.live_price)*100 as one_year_potential_gain_percentage
     FROM
         trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY 
     WHERE
