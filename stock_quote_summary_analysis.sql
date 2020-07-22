@@ -65,3 +65,17 @@ select * from (select * from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW 
 -- Which stock has the highest one year potential gain percentage(most current data) top 10
 select * from (select * from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW order by ONE_YEAR_POTENTIAL_GAIN_PERCENTAGE desc) where rownum <= 10 and ONE_YEAR_POTENTIAL_GAIN_PERCENTAGE is not NULL
 
+/*
+ * Which stock has the highest one year potential gain percentage(most current data) top 10
+ * where live_price >= 100
+ */
+select t.* from 
+(
+select a.* from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW a
+where a.live_price >= 100
+order by a.ONE_YEAR_POTENTIAL_GAIN_PERCENTAGE desc
+) t 
+where 
+rownum <= 10 and 
+t.ONE_YEAR_POTENTIAL_GAIN_PERCENTAGE is not NULL
+
