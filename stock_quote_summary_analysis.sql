@@ -79,3 +79,7 @@ where
 rownum <= 10 and 
 t.ONE_YEAR_POTENTIAL_GAIN_PERCENTAGE is not NULL
 
+/*
+ * Which stock has the highest volatility
+ */
+select * from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW order by day_volatility desc
