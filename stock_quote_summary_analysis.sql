@@ -80,6 +80,19 @@ rownum <= 10 and
 t.ONE_YEAR_POTENTIAL_GAIN_PERCENTAGE is not NULL
 
 /*
+ * For all
+ */
+select t.* from 
+(
+select a.* from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW a
+where a.live_price >= 100
+order by a.ONE_YEAR_POTENTIAL_GAIN_PERCENTAGE desc
+) t 
+where 
+t.ONE_YEAR_POTENTIAL_GAIN_PERCENTAGE is not NULL
+
+
+/*
  * Which stock has the highest volatility
  */
 select * from trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW order by day_volatility desc

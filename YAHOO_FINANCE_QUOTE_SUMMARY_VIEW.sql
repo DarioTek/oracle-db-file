@@ -1,3 +1,5 @@
+ alter user trading_investing identified by oracle account unlock;
+
 /*
  * trading_investing.YAHOO_FINANCE_QUOTE_SUMMARY_VIEW
  */
